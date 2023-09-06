@@ -10,6 +10,7 @@ export default function me(req: Request, res: Response) {
         imagem: "",
         cor_fundo: "#ADDDFF",
         cor_fonte: "#000F99",
+        necessita_conexao: false,
         status: true,
       },
       {
@@ -19,6 +20,7 @@ export default function me(req: Request, res: Response) {
         imagem: "",
         cor_fundo: "#D1ADFF",
         cor_fonte: "#8300C0",
+        necessita_conexao: true,
         status: false,
       },
       {
@@ -28,6 +30,7 @@ export default function me(req: Request, res: Response) {
         imagem: "",
         cor_fundo: "#ADFFBF",
         cor_fonte: "#115700",
+        necessita_conexao: false,
         status: false,
       },
       {
@@ -37,6 +40,7 @@ export default function me(req: Request, res: Response) {
         imagem: "",
         cor_fundo: "#FFADAD",
         cor_fonte: "#980000",
+        necessita_conexao: false,
         status: false,
       },
     ];
