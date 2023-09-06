@@ -17,6 +17,14 @@ export interface UserType extends Document {
   senha: string;
 }
 
+export interface RoomType extends Document {
+  nome: string;
+  bloco: string;
+  corredor: string;
+  capacidade: Number;
+  disponivel: boolean;
+}
+
 export interface PayloadType {
   id: string;
   role: Role;
