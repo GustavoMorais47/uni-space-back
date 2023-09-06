@@ -5,6 +5,7 @@ import Users from "../../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import NodeCache from "node-cache";
+import { PayloadType } from "../../types";
 
 const cache = new NodeCache();
 
@@ -51,7 +52,7 @@ export default async function login(req: Request, res: Response) {
 
     cache.del(String(cpf));
 
-    const payload = {
+    const payload: PayloadType = {
       id: user._id,
       role: user.role,
     };

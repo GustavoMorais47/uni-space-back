@@ -21,6 +21,11 @@ const schema = new Schema<UserType>({
     required: true,
     unique: true,
   },
+  status: {
+    type: Boolean,
+    required: true,
+    default: true,
+  },
   senha: {
     type: String,
     required: true,
@@ -36,6 +41,7 @@ Users.find().then(async (users) => {
       role: "admin",
       cpf: "00000000000",
       email: "gustavomorais47.gm@gmail.com",
+      status: true,
       senha: "$2a$10$qCTS6WASs6ZWQr0lS9EiiOBXB.t2bkO8H2KkHP.EZ7MCy4s4yOEVO",
     })
       .then(() => console.log("Usuário admin criado"))

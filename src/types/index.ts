@@ -13,5 +13,11 @@ export interface UserType extends Document {
   role: Role;
   cpf: string;
   email: string;
+  status: boolean;
   senha: string;
+}
+
+export interface PayloadType {
+  id: string;
+  role: Role;
 }
