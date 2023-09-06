@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3000;
 const ambiente = process.env.AMBIENTE || "dev";
 const banco = ambiente === "prod" ? "uniSpace" : "uniSpace-Test";
 
+
 const app = express();
 const serverURI = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.icphymd.mongodb.net/${banco}?retryWrites=true&w=majority`;
 
