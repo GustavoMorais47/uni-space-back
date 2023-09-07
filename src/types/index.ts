@@ -16,10 +16,8 @@ export enum Role {
 }
 
 export enum ServicosEnum {
-  SUPPORT = "support",
-  VIRTUAL_ROOM = "virtual_room",
-  SCHEDULES = "schedules",
-  CALENDAR = "calendar",
+  SUPPORT = "Support",
+  MANAGE_SPACES = "Manage_Spaces",
 }
 
 export interface UserType extends Document {
@@ -33,12 +31,10 @@ export interface UserType extends Document {
 
 export interface PayloadType {
   id: string;
-  role: Role;
 }
 
 export interface ServicosType {
   id: ServicosEnum;
-  navegador: ServicosEnum;
   titulo: string;
   imagem: string;
   cor_fundo: CorType;

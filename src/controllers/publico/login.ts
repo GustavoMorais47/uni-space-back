@@ -54,7 +54,6 @@ export default async function login(req: Request, res: Response) {
 
     const payload: PayloadType = {
       id: user._id,
-      role: user.role,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET!, {
