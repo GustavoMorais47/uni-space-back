@@ -2,7 +2,8 @@ import { Router } from "express";
 import login from "../controllers/publico/login";
 import auth from "../middlewares/auth";
 import me from "../controllers/privado/me";
-import Rooms from "../models/Room";
+import Room from "../models/Room";
+import { error } from "console";
 
 const routes = Router();
 
@@ -12,8 +13,9 @@ routes.post("/login", login);
 // Rotas privadas
 routes.get("/me", auth);
 
-// rotas by ZIUGOD
-routes.post("/room", auth, (req, res) => {
+
+// create
+routes.post("/room", auth, async (req, res) => {
     try {
         const {
             nome,
@@ -23,27 +25,107 @@ routes.post("/room", auth, (req, res) => {
             disponivel,
         } = req.body;
 
-        if (!nome || !bloco || !corredor || !capacidade || !disponivel) {
-            res.status(422).json({ error: "Dados inconsistentes." });
-        };
+        if (!nome || !bloco || !corredor || !capacidade || disponivel === undefined) {
+            return res.status(422).json({ error: "Dados inconsistentes." });
+        }
 
-        const room = {
+        const room = await Room.create({
             nome,
             bloco,
             corredor,
             capacidade,
             disponivel,
-        };
-
-        Rooms.create(room);
+        });
 
         return res.status(201).json({
-            message: "Criado com suceso!",
+            message: "Criado com sucesso!",
+            room,
         });
 
     } catch (error) {
-        res.status(500).json({ error: error });
+        console.error(error);
+        return res.status(500).json({ error: "Erro interno do servidor." });
     }
 });
+
+
+// read
+routes.get("/room", auth, async (req, res) => {
+    try {
+        const rooms = await Room.find();
+
+        if (!rooms || rooms.length === 0) {
+            return res.status(404).json({ error: "Nenhuma sala encontrada." });
+        }
+
+        return res.status(200).json(rooms);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Erro interno do servidor." });
+    }
+});
+
+
+// read with an ID
+routes.get("/room/:id", auth, async (req, res) => {
+    try {
+        const roomId = req.params.id;
+
+        const room = await Room.findById(roomId);
+
+        if (!room) {
+            return res.status(404).json({ error: "Sala não encontrada." });
+        }
+
+        return res.status(200).json(room);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Erro interno do servidor." });
+    }
+});
+
+
+// update
+routes.put("/room/:id", auth, async (req, res) => {
+    try {
+        const roomId = req.params.id;
+        const updates = req.body;
+
+        const room = await Room.findByIdAndUpdate(roomId, updates, { new: true });
+
+        if (!room) {
+            return res.status(404).json({ error: "Sala não encontrada." });
+        }
+
+        return res.status(200).json(room);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Erro interno do servidor." });
+    }
+});
+
+// delete
+routes.delete("/room/:id", auth, async (req, res) => {
+    try {
+        const roomId = req.params.id;
+
+        const room = await Room.findByIdAndRemove(roomId);
+
+        if (!room) {
+            return res.status(404).json({ error: "Sala não encontrada." });
+        }
+
+        return res.status(204).end(); // Retorna 204 No Content para indicar sucesso sem resposta.
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Erro interno do servidor." });
+    }
+});
+
+
 
 export default routes;

@@ -25,11 +25,11 @@ const schema = new Schema<RoomType>({
     },
 });
 
-const Rooms = model<RoomType>("Rooms", schema);
+const Room = model<RoomType>("Rooms", schema);
 
-Rooms.find().then(async (rooms) => {
+Room.find().then(async (rooms) => {
     // futuro código
 
 });
 
-export default Rooms;
+export default Room;
