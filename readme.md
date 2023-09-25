@@ -40,52 +40,12 @@ _**Atenção:** O comando `npm start` necessita do build do projeto;_
 
 ### Acessos
 
-- **Administrador**
+- **Usuário de Teste**
 
 ```json
 
 "cpf":"00000000000",
 
 "senha":"admin"
-
-```
-
-- **Labs**
-
-```json
-
-"cpf":"91307235077",
-
-"senha":"root"
-
-```
-
-- **Infra**
-
-```json
-
-"cpf":"34959215089",
-
-"senha":"root"
-
-```
-
-- **Professor**
-
-```json
-
-"cpf":"22332577076",
-
-"senha":"root"
-
-```
-
-- **Aluno**
-
-```json
-
-"cpf":"74706207029",
-
-"senha":"root"
 
 ```

@@ -4,7 +4,7 @@ import routes from "./routes/index.routes";
 import mongoose from "mongoose";
 import utils from "./utils";
 
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT?.replace(/[^0-9]/g, "")) || 3000;
 const ambiente = process.env.AMBIENTE || "dev";
 const banco = ambiente === "prod" ? "uniSpace" : "uniSpace-Test";
 

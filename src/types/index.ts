@@ -22,7 +22,7 @@ export enum ServicosEnum {
 
 export interface UserType extends Document {
   nome: string;
-  role: Role;
+  role: Role[];
   cpf: string;
   email: string;
   status: boolean;
@@ -31,6 +31,7 @@ export interface UserType extends Document {
 
 export interface PayloadType {
   id: string;
+  role: Role;
 }
 
 export interface ServicosType {
