@@ -17,12 +17,31 @@ export interface UserType extends Document {
   senha: string;
 }
 
-export interface RoomType extends Document {
-  nome: string;
-  bloco: string;
-  corredor: string;
-  capacidade: Number;
+export interface HorarioType {
   disponivel: boolean;
+  inicio: number | null;
+  fim: number | null;
+}
+
+export interface DisponibilidadeType {
+  padrao: boolean;
+  domingo: HorarioType | null;
+  segunda: HorarioType | null;
+  terca: HorarioType | null;
+  quarta: HorarioType | null;
+  quinta: HorarioType | null;
+  sexta: HorarioType | null;
+  sabado: HorarioType | null;
+}
+
+export interface EspacosType extends Document {
+  id: string;
+  nome: string;
+  localizacao: string;
+  imagens: string[];
+  capacidade: number;
+  disponibilidade: DisponibilidadeType;
+  status: boolean;
 }
 
 export interface PayloadType {
