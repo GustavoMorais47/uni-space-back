@@ -10,7 +10,7 @@ export enum Role {
 
 export interface UserType extends Document {
   nome: string;
-  role: Role;
+  role: Role[];
   cpf: string;
   email: string;
   status: boolean;

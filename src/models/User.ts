@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { UserType } from "../types";
+import { Role, UserType } from "../types";
 
 const schema = new Schema<UserType>({
   nome: {
@@ -7,7 +7,7 @@ const schema = new Schema<UserType>({
     required: true,
   },
   role: {
-    type: String,
+    type: [String],
     required: true,
     enum: ["admin", "labs", "infra", "professor", "aluno"],
   },
@@ -37,15 +37,17 @@ const Users = model<UserType>("Users", schema);
 Users.find().then(async (users) => {
   if (users.length === 0) {
     await Users.create({
-      nome: "admin",
-      role: "admin",
+      nome: "Usuário de Teste",
+      role: [
+        Role.ADMIN,
+        Role.LABS,
+      ],
       cpf: "00000000000",
       email: "gustavomorais47.gm@gmail.com",
-      status: true,
       senha: "$2a$10$qCTS6WASs6ZWQr0lS9EiiOBXB.t2bkO8H2KkHP.EZ7MCy4s4yOEVO",
     })
-      .then(() => console.log("Usuário admin criado"))
-      .catch((error) => console.error("Erro ao criar usuário admin", error));
+      .then(() => console.log("Usuário Teste criado"))
+      .catch((error) => console.error("Erro ao criar usuário Teste", error));
   }
 });
 

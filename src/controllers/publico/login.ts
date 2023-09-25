@@ -11,7 +11,7 @@ const cache = new NodeCache();
 
 export default async function login(req: Request, res: Response) {
   try {
-    const { cpf, senha } = req.body;
+    const { cpf, senha, role } = req.body;
 
     if (!cpf || !senha)
       return res.status(400).json({
@@ -34,8 +34,8 @@ export default async function login(req: Request, res: Response) {
     const user = await Users.findOne({ cpf });
 
     if (!user)
-      return res.status(404).json({
-        mensagem: "Usuário não encontrado",
+      return res.status(401).json({
+        mensagem: "Usuário ou senha incorretos",
       });
 
     const match = bcrypt.compareSync(senha, user.senha);
@@ -46,19 +46,37 @@ export default async function login(req: Request, res: Response) {
       cache.set(String(cpf), String(novaTentativa), 1800);
 
       return res.status(401).json({
-        mensagem: "Senha incorreta",
+        mensagem: "Usuário ou senha incorretos",
       });
     }
 
     cache.del(String(cpf));
 
+    if (!user.status)
+      return res.status(403).json({
+        mensagem: "Usuário bloqueado",
+      });
+
+    if (user.role.length > 1 && !role)
+      return res.status(200).json({
+        mensagem: "Usuário possui mais de uma permissão",
+        nome: user.nome,
+        permissoes: user.role,
+      });
+
+    if (!user.role.includes(role) && user.role.length > 1)
+      return res.status(400).json({
+        mensagem: "Usuário não possui essa permissão",
+        permissoes: user.role,
+      });
+
     const payload: PayloadType = {
       id: user._id,
-      role: user.role,
+      role: user.role.length > 1 ? role : user.role[0],
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET!, {
-      expiresIn: "1d",
+      expiresIn: "30d",
     });
 
     return res.status(200).json({ token });
