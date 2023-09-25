@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import Users from "../models/User";
 import { Types } from "mongoose";
 import { PayloadType } from "../types";
+import Usuarios from "../models/Usuarios";
 
 export default function auth(req: Request, res: Response, next: NextFunction) {
   try {
@@ -28,7 +28,7 @@ export default function auth(req: Request, res: Response, next: NextFunction) {
       if (!Types.ObjectId.isValid(payload.id))
         return res.status(400).json({ mensagem: "ID inválido" });
 
-      const user = await Users.findById(payload.id).select("-senha -__v");
+      const user = await Usuarios.findById(payload.id).select("-senha -__v");
 
       if (!user)
         return res.status(404).json({ mensagem: "Usuário não existe" });

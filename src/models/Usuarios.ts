@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
-import { Role, UserType } from "../types";
+import { Role, UsuarioType } from "../types";
 
-const schema = new Schema<UserType>({
+const schema = new Schema<UsuarioType>({
   nome: {
     type: String,
     required: true,
@@ -9,7 +9,7 @@ const schema = new Schema<UserType>({
   role: {
     type: [String],
     required: true,
-    enum: ["admin", "labs", "infra", "professor", "aluno"],
+    enum: [Role.ADMIN, Role.LABS],
   },
   cpf: {
     type: String,
@@ -32,16 +32,13 @@ const schema = new Schema<UserType>({
   },
 });
 
-const Users = model<UserType>("Users", schema);
+const Usuarios = model<UsuarioType>("Usuarios", schema);
 
-Users.find().then(async (users) => {
+Usuarios.find().then(async (users) => {
   if (users.length === 0) {
-    await Users.create({
+    await Usuarios.create({
       nome: "Usuário de Teste",
-      role: [
-        Role.ADMIN,
-        Role.LABS,
-      ],
+      role: [Role.ADMIN, Role.LABS],
       cpf: "00000000000",
       email: "gustavomorais47.gm@gmail.com",
       senha: "$2a$10$qCTS6WASs6ZWQr0lS9EiiOBXB.t2bkO8H2KkHP.EZ7MCy4s4yOEVO",
@@ -51,4 +48,4 @@ Users.find().then(async (users) => {
   }
 });
 
-export default Users;
+export default Usuarios;

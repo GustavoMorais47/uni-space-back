@@ -8,7 +8,7 @@ export enum Role {
   ALUNO = "aluno",
 }
 
-export interface UserType extends Document {
+export interface UsuarioType extends Document {
   nome: string;
   role: Role[];
   cpf: string;

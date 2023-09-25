@@ -1,11 +1,11 @@
 import "dotenv/config";
 import { Request, Response } from "express";
 import { cpf as cpfValidator } from "cpf-cnpj-validator";
-import Users from "../../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import NodeCache from "node-cache";
 import { PayloadType } from "../../types";
+import Usuarios from "../../models/Usuarios";
 
 const cache = new NodeCache();
 
@@ -31,14 +31,14 @@ export default async function login(req: Request, res: Response) {
           "Você excedeu o limite de tentativas, tente novamente mais tarde",
       });
 
-    const user = await Users.findOne({ cpf });
+    const usuario = await Usuarios.findOne({ cpf });
 
-    if (!user)
+    if (!usuario)
       return res.status(401).json({
         mensagem: "Usuário ou senha incorretos",
       });
 
-    const match = bcrypt.compareSync(senha, user.senha);
+    const match = bcrypt.compareSync(senha, usuario.senha);
 
     if (!match) {
       const novaTentativa = tentativas ? Number(tentativas) + 1 : 1;
@@ -52,27 +52,27 @@ export default async function login(req: Request, res: Response) {
 
     cache.del(String(cpf));
 
-    if (!user.status)
+    if (!usuario.status)
       return res.status(403).json({
         mensagem: "Usuário bloqueado",
       });
 
-    if (user.role.length > 1 && !role)
+    if (usuario.role.length > 1 && !role)
       return res.status(200).json({
         mensagem: "Usuário possui mais de uma permissão",
-        nome: user.nome,
-        permissoes: user.role,
+        nome: usuario.nome,
+        permissoes: usuario.role,
       });
 
-    if (!user.role.includes(role) && user.role.length > 1)
+    if (!usuario.role.includes(role) && usuario.role.length > 1)
       return res.status(400).json({
         mensagem: "Usuário não possui essa permissão",
-        permissoes: user.role,
+        permissoes: usuario.role,
       });
 
     const payload: PayloadType = {
-      id: user._id,
-      role: user.role.length > 1 ? role : user.role[0],
+      id: usuario._id,
+      role: usuario.role.length > 1 ? role : usuario.role[0],
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET!, {
