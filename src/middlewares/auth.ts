@@ -36,7 +36,11 @@ export default function auth(req: Request, res: Response, next: NextFunction) {
       if (!user.status)
         return res.status(401).json({ mensagem: "Usuário desativado" });
 
-      req.body.payload = user;
+      req.body.payload = {
+        _id: user._id,
+        nome: user.nome,
+        role: payload.role,
+      };
 
       next();
     });

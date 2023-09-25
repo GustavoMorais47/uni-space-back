@@ -48,3 +48,9 @@ export interface PayloadType {
   id: string;
   role: Role;
 }
+
+export interface PayloadBodyType {
+  _id: string;
+  nome: string;
+  role: Role;
+}
